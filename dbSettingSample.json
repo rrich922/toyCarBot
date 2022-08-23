@@ -1,0 +1,8 @@
+{
+    "host": "127.0.0.1",
+    "port": 9487,
+    "user": "sample",
+    "password": "123456789",
+    "db": "sample",
+    "charset": "utf8"
+}
