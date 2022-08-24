@@ -35,7 +35,7 @@ import pymysql
 with open('dbSetting.json') as f:
     db_settings = json.load(f)
 conn = pymysql.connect(**db_settings)
-
+conn.ping(reconnect=True)
 
 
 from linebot.exceptions import (
@@ -89,8 +89,6 @@ def callback():
 
 @handler.add(MessageEvent, message=ImageMessage)
 def handle_message(event):
-    global a 
-    a = event
 
     upload_url = 'https://34.80.33.162:8000/v1/recognition_api/tc_img_upload'
     userID = event.source.user_id
@@ -110,20 +108,25 @@ def handle_message(event):
     x = requests.post(upload_url, data = data ,files=files)
     
     upload = False
-    for i in range(5):
-        time.sleep(1)
+    conn = pymysql.connect(**db_settings)
+    conn.ping(reconnect=True)
+    for i in range(3):
+        time.sleep(0.5)
         with conn.cursor() as cursor:
-            command = "select event_result,event_value from tc_img_recognition where event_id = "+str(event_id)+";"    
+            command = "select event_result,event_value from tc_img_recognition where event_id = "+str(event_id)+";"  
             cursor.execute(command)
             result = cursor.fetchall()
             cursor.close()
             conn.commit()
+            
         if not len(result) or result[0][0]==None:
             print(result)
             time.sleep(1)    
         else:
             upload = True
             break
+    conn.close()
+            
     if upload:
         print(result)
         value = int(result[0][1]*100)
@@ -190,4 +193,4 @@ def handle_postback(event):
 
 if __name__ == '__main__':
 
-    app.run(port=5000, debug=False)
+    app.run(port=5002, debug=False)
