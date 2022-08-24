@@ -105,7 +105,7 @@ def handle_message(event):
 
     files = {'image': ('image.jpg', image, 'image/jpeg')}
     data = {'event_id': event_id,'event_time':event_time,'user_id': userID}
-    x = requests.post(upload_url, data = data ,files=files)
+    x = requests.post(upload_url, data = data ,files=files, verify=False)
     
     upload = False
     conn = pymysql.connect(**db_settings)
