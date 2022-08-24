@@ -192,5 +192,6 @@ def handle_postback(event):
             TextSendMessage(text=action))    
 
 if __name__ == '__main__':
-
-    app.run(port=5002, debug=False)
+    from waitress import serve
+    serve(app, host="0.0.0.0", port=5002)
+    #app.run(port=5002, debug=False)
