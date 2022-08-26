@@ -15,7 +15,7 @@ import json
 import time
 import requests
 
-from utils import get_crt_time
+from utils import get_crt_time,DBOperation,MsgGenerator
 
 from flask import Flask, request, abort
 app = Flask(__name__)
@@ -53,9 +53,7 @@ from linebot.models import (
 
 
 
-CLASSES = ['轉爐石', '其他', '瀝青刨除料',
-           '天然骨材', '焚化再生粒料', '電弧爐氧化碴',
-           '太陽光電回收玻璃', '太陽光電回收玻璃']
+
 
 with open('dialog.csv', encoding='utf-8-sig') as csvfile:
   # 讀取 CSV 檔內容，將每一列轉成一個 dictionary
@@ -86,7 +84,8 @@ def callback():
 
 
 
-
+dbOperation = DBOperation()
+msgGenerator = MsgGenerator()   
 @handler.add(MessageEvent, message=ImageMessage)
 def handle_message(event):
 
@@ -105,37 +104,12 @@ def handle_message(event):
 
     files = {'image': ('image.jpg', image, 'image/jpeg')}
     data = {'event_id': event_id,'event_time':event_time,'user_id': userID}
-    x = requests.post(upload_url, data = data ,files=files, verify=False)
-    
-    upload = False
-    conn = pymysql.connect(**db_settings)
-    conn.ping(reconnect=True)
-    for i in range(3):
-        time.sleep(0.5)
-        with conn.cursor() as cursor:
-            command = "select event_result,event_value from tc_img_recognition where event_id = "+str(event_id)+";"  
-            cursor.execute(command)
-            result = cursor.fetchall()
-            cursor.close()
-            conn.commit()
-            
-        if not len(result) or result[0][0]==None:
-            print(result)
-            time.sleep(1)    
-        else:
-            upload = True
-            break
-    conn.close()
-            
-    if upload:
-        print(result)
-        value = int(result[0][1]*100)
-        if value<50 or result[0][0]==1:
-            msg = "你不要騙我，這是你亂拍的對吧XD"
-        else:
-            msg = "這看起來有"+str(value)+"%像是"+str(CLASSES[result[0][0]])
-    else:
-        msg = "server delay"
+    try:
+        x = requests.post(upload_url, data = data ,files=files, verify=False)
+        result, upload = dbOperation.queryResult(event_id)
+        msg = msgGenerator.imageEvent(upload, result)
+    except:
+        msg = "伺服器維修中,暫無回應"
     line_bot_api.reply_message(
          event.reply_token,
          TextSendMessage(text=msg))
