@@ -9,6 +9,7 @@ import datetime
 import time
 import json
 import pymysql
+import os
 
 def get_crt_time(timestamp):
     """
@@ -62,6 +63,9 @@ class MsgGenerator():
         self.CLASSES = ['轉爐石', '其他', '瀝青刨除料',
            '天然骨材', '焚化再生粒料', '電弧爐氧化碴',
            '太陽光電回收玻璃', '太陽光電回收玻璃']
+        
+        self.replyText = os.listdir('replyText')
+
     def imageEvent(self,upload,result):
         if upload:
             value = int(result[1]*100)
@@ -72,5 +76,15 @@ class MsgGenerator():
         else:
             msg = "server delay"
         return msg
+    
+    def textEvent(self,text,msg,dialogs):
+        if msg in dialogs:
+            rtMsg = dialogs[msg].replace('\\n','\n')
+            if rtMsg in self.replyText:
+                reply = open('replyText/'+rtMsg, 'r').readlines()
+                rtMsg = ''.join(reply)
+        else:
+            rtMsg = ' https://www.youtube.com/watch?v=TBKhml1qVLM'
+        
         
     
