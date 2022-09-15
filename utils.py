@@ -77,7 +77,7 @@ class MsgGenerator():
             msg = "server delay"
         return msg
     
-    def textEvent(self,text,msg,dialogs):
+    def textEvent(self,msg,dialogs):
         if msg in dialogs:
             rtMsg = dialogs[msg].replace('\\n','\n')
             if rtMsg in self.replyText:
@@ -85,6 +85,7 @@ class MsgGenerator():
                 rtMsg = ''.join(reply)
         else:
             rtMsg = ' https://www.youtube.com/watch?v=TBKhml1qVLM'
+        return rtMsg
         
         
     

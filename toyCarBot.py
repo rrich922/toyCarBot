@@ -51,12 +51,6 @@ from linebot.models import (
 )
 
 
-
-
-
-
-
-
 with open('dialog.csv', encoding='utf-8-sig') as csvfile:
   # 讀取 CSV 檔內容，將每一列轉成一個 dictionary
   rows = csv.reader(csvfile)
@@ -121,11 +115,7 @@ def handle_message(event):
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     msg = event.message.text
-    if msg in dialogs:
-        rtMsg = dialogs[msg].replace('\\n','\n')
-    else:
-        rtMsg = ' https://www.youtube.com/watch?v=TBKhml1qVLM'
-    
+    rtMsg = msgGenerator.textEvent(msg, dialogs)
 
     template = TemplateSendMessage(
                             alt_text='Buttons template',
