@@ -114,9 +114,10 @@ class MsgGenerator():
                 reply = open('replyText/'+rtMsg, 'r').readlines()
                 rtMsg = ''.join(reply)
             return TextSendMessage(text=rtMsg)
-        elif msg == '有甚麼材料':
+        else:
             rtMsg = [self.templateGenerator(self.Material[0:4]),self.templateGenerator(self.Material[4:])]
             return rtMsg
+        
     
         
         
