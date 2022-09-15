@@ -110,12 +110,15 @@ class MsgGenerator():
     def textEvent(self,msg,dialogs):
         if msg in dialogs:
             rtMsg = dialogs[msg].replace('\\n','\n')
-            if rtMsg in self.replyText:
+            if rtMsg[0:2] == 'SR':
+                rtMsg = [self.templateGenerator(self.Material[0:4]),self.templateGenerator(self.Material[4:])]
+                return rtMsg
+            elif rtMsg in self.replyText:
                 reply = open('replyText/'+rtMsg, 'r').readlines()
                 rtMsg = ''.join(reply)
-            return TextSendMessage(text=rtMsg)
+                return TextSendMessage(text=rtMsg)
         else:
-            rtMsg = [self.templateGenerator(self.Material[0:4]),self.templateGenerator(self.Material[4:])]
+            rtMsg = '預設回應'
             return rtMsg
         
     
