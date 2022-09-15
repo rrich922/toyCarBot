@@ -118,7 +118,7 @@ class MsgGenerator():
                 rtMsg = ''.join(reply)
                 return TextSendMessage(text=rtMsg)
         else:
-            rtMsg = '預設回應'
+            rtMsg = '其他未設定對話,預設回應區'
             return rtMsg
         
     
