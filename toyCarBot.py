@@ -117,37 +117,12 @@ def handle_message(event):
     msg = event.message.text
     rtMsg = msgGenerator.textEvent(msg, dialogs)
 
-    template = TemplateSendMessage(
-                            alt_text='Buttons template',
-                            template=ButtonsTemplate(
-                                title='Menu',
-                                text='請選擇地區',
-                                actions=[
-                                    MessageTemplateAction(
-                                        label='台北市',
-                                        text='台北市'
-                                    ),
-                                    MessageTemplateAction(
-                                        label='台中市',
-                                        text='台中市'
-                                    ),
-                                    MessageTemplateAction(
-                                        label='高雄市',
-                                        text='高雄市'
-                                    ),
-                                    PostbackAction(
-                                        label='postback2',
-                                        #display_text='postback text2',
-                                        data='action=buy&itemid=2'
-                                        ) 
-                                ]
-                            )
-                        )
-    
+
+
     
     line_bot_api.reply_message(
             event.reply_token,
-            [TextSendMessage(text=rtMsg),template])
+            rtMsg)
             #TextSendMessage(text=rtMsg))
             
 @handler.add(PostbackEvent)

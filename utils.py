@@ -10,7 +10,12 @@ import time
 import json
 import pymysql
 import os
-
+from linebot.models import (
+    TemplateSendMessage,
+    MessageTemplateAction,
+    ButtonsTemplate,
+    TextSendMessage,
+)
 def get_crt_time(timestamp):
     """
         return current time
@@ -64,8 +69,33 @@ class MsgGenerator():
            '天然骨材', '焚化再生粒料', '電弧爐氧化碴',
            '太陽光電回收玻璃', '太陽光電回收玻璃']
         
+        self.Material = ['轉爐石', '瀝青刨除料', '天然骨材',
+           '焚化爐再生粒料', '電弧爐氧化渣', '太陽光電回收玻璃',
+           '水淬高爐石']
+        
         self.replyText = os.listdir('replyText')
+        
 
+
+    def templateGenerator(self,material,text='請選擇材料'):
+        actions = []
+        for m in material:
+            action = MessageTemplateAction(
+                                    label= m,
+                                    text= m
+                                    )
+            actions.append(action)
+        
+        template = TemplateSendMessage(
+                            alt_text='Buttons template',
+                            template=ButtonsTemplate(
+                                title='Menu',
+                                text=text,
+                                actions=actions
+                            )
+                        )
+        return template
+    
     def imageEvent(self,upload,result):
         if upload:
             value = int(result[1]*100)
@@ -83,9 +113,11 @@ class MsgGenerator():
             if rtMsg in self.replyText:
                 reply = open('replyText/'+rtMsg, 'r').readlines()
                 rtMsg = ''.join(reply)
-        else:
-            rtMsg = ' https://www.youtube.com/watch?v=TBKhml1qVLM'
-        return rtMsg
+            return TextSendMessage(text=rtMsg)
+        elif msg == '有甚麼材料':
+            rtMsg = [self.templateGenerator(self.Material[0:4]),self.templateGenerator(self.Material[4:])]
+            return rtMsg
+    
         
         
     
