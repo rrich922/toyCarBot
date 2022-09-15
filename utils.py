@@ -119,7 +119,8 @@ class MsgGenerator():
                 return TextSendMessage(text=rtMsg)
         else:
             rtMsg = '其他未設定對話,預設回應區'
-            return rtMsg
+            return TextSendMessage(text=rtMsg)
+            
         
     
         
