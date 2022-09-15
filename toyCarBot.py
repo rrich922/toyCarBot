@@ -37,6 +37,8 @@ with open('dbSetting.json') as f:
 conn = pymysql.connect(**db_settings)
 conn.ping(reconnect=True)
 
+with open('ip.json') as f:
+    ip = json.load(f)['ip']
 
 from linebot.exceptions import (
     InvalidSignatureError
@@ -89,7 +91,7 @@ msgGenerator = MsgGenerator()
 @handler.add(MessageEvent, message=ImageMessage)
 def handle_message(event):
 
-    upload_url = 'https://34.80.33.162:8000/v1/recognition_api/tc_img_upload'
+    upload_url = 'https://'+ip+':8000/v1/recognition_api/tc_img_upload'
     userID = event.source.user_id
     event_time = get_crt_time(event.timestamp)
     event_id = event.message.id
