@@ -99,7 +99,7 @@ class MsgGenerator():
     def imageEvent(self,upload,result):
         if upload:
             value = int(result[1]*100)
-            if value<50 or result[0]==1:
+            if value<25 or result[0]==1:
                 msg = "你不要騙我，這是你亂拍的對吧XD"
             else:
                 msg = "這看起來有"+str(value)+"%像是"+str(self.CLASSES[result[0]])
