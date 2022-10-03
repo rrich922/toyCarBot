@@ -65,9 +65,9 @@ class DBOperation():
     
 class MsgGenerator():
     def __init__(self,):
-        self.CLASSES = ['轉爐石', '其他', '瀝青刨除料',
+        self.CLASSES = ['轉爐石', '瀝青刨除料',
            '天然骨材', '焚化再生粒料', '電弧爐氧化碴',
-           '太陽光電回收玻璃', '太陽光電回收玻璃']
+           '太陽光電回收玻璃', '水淬高爐石']
         
         self.Material = ['轉爐石', '瀝青刨除料', '天然骨材',
            '焚化爐再生粒料', '電弧爐氧化渣', '太陽光電回收玻璃',
@@ -99,7 +99,7 @@ class MsgGenerator():
     def imageEvent(self,upload,result):
         if upload:
             value = int(result[1]*100)
-            if value<25 or result[0]==1:
+            if value<25:
                 msg = "你不要騙我，這是你亂拍的對吧XD"
             else:
                 msg = "這看起來有"+str(value)+"%像是"+str(self.CLASSES[result[0]])
