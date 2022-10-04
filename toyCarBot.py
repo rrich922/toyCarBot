@@ -81,7 +81,7 @@ def callback():
 
 
 dbOperation = DBOperation()
-msgGenerator = MsgGenerator()   
+msgGenerator = MsgGenerator(dialogs)   
 @handler.add(MessageEvent, message=ImageMessage)
 def handle_message(event):
 
