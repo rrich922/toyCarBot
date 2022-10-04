@@ -103,9 +103,10 @@ class MsgGenerator():
                 msg = TextSendMessage(text="你不要騙我，這是你亂拍的對吧XD")
                 return msg
             else:
-                msg = TextSendMessage(text="這看起來有"+str(value)+"%像是"+str(self.CLASSES[result[0]]))
+                msg = "這看起來有"+str(value)+"%像是"+str(self.CLASSES[result[0]])
+                msg = TextSendMessage(text=msg)
                 intro = self.textEvent(self.CLASSES[result[0]], self.dialogs)
-                return (msg,intro)
+                return [msg,intro]
         else:
             msg = TextSendMessage(text="server delay")
             return msg

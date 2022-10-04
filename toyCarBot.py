@@ -105,11 +105,9 @@ def handle_message(event):
         result, upload = dbOperation.queryResult(event_id)
         msg = msgGenerator.imageEvent(upload, result)
     except:
-        msg = "伺服器維修中,暫無回應"
+        msg = TextSendMessage(text="伺服器維修中,暫無回應")
     line_bot_api.reply_message(
-         event.reply_token,
-         msg
-          )
+         event.reply_token,msg)
     
 
     
