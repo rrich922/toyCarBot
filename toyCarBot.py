@@ -103,6 +103,7 @@ def handle_message(event):
     try:
         x = requests.post(upload_url, data = data ,files=files, verify=False)
         result, upload = dbOperation.queryResult(event_id)
+        print(result,upload)
         msg = msgGenerator.imageEvent(upload, result)
     except:
         msg = TextSendMessage(text="伺服器維修中,暫無回應")
