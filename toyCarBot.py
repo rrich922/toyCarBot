@@ -115,7 +115,7 @@ def handle_message(event):
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     msg = event.message.text
-    rtMsg = msgGenerator.textEvent(msg, dialogs)
+    rtMsg = msgGenerator.textEvent(msg)
 
 
 

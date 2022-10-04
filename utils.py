@@ -105,8 +105,8 @@ class MsgGenerator():
             else:
                 msg = "這看起來有"+str(value)+"%像是"+str(self.CLASSES[result[0]])
                 msg = TextSendMessage(text=msg)
-                intro = self.textEvent(self.CLASSES[result[0]], self.dialogs)
-                return msg
+                intro = self.textEvent(self.CLASSES[result[0]])
+                return msg,intro
         else:
             msg = TextSendMessage(text="server delay")
             return msg
