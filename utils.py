@@ -64,17 +64,17 @@ class DBOperation():
         return result, upload
     
 class MsgGenerator():
-    def __init__(self,):
+    def __init__(self,dialogs):
         self.CLASSES = ['轉爐石', '瀝青刨除料',
            '天然骨材', '焚化再生粒料', '電弧爐氧化碴',
            '太陽光電回收玻璃', '水淬高爐石']
         
         self.Material = ['轉爐石', '瀝青刨除料', '天然骨材',
-           '焚化爐再生粒料', '電弧爐氧化渣', '太陽光電回收玻璃',
+           '焚化爐再生粒料', '電弧爐氧化碴', '太陽光電回收玻璃',
            '水淬高爐石']
         
         self.replyText = os.listdir('replyText')
-        
+        self.dialogs = dialogs
 
 
     def templateGenerator(self,material,text='請選擇材料'):
@@ -100,16 +100,19 @@ class MsgGenerator():
         if upload:
             value = int(result[1]*100)
             if value<25:
-                msg = "你不要騙我，這是你亂拍的對吧XD"
+                msg = TextSendMessage(text="你不要騙我，這是你亂拍的對吧XD")
+                return msg
             else:
-                msg = "這看起來有"+str(value)+"%像是"+str(self.CLASSES[result[0]])
+                msg = TextSendMessage(text="這看起來有"+str(value)+"%像是"+str(self.CLASSES[result[0]]))
+                intro = self.textEvent(self.CLASSES[result[0]], self.dialogs)
+                return msg,intro
         else:
-            msg = "server delay"
-        return msg
+            msg = TextSendMessage(text="server delay")
+            return msg
     
-    def textEvent(self,msg,dialogs):
-        if msg in dialogs:
-            rtMsg = dialogs[msg].replace('\\n','\n')
+    def textEvent(self,msg):
+        if msg in self.dialogs:
+            rtMsg = self.dialogs[msg].replace('\\n','\n')
             if rtMsg[0:2] == 'SR':
                 rtMsg = [self.templateGenerator(self.Material[0:4]),self.templateGenerator(self.Material[4:])]
                 return rtMsg

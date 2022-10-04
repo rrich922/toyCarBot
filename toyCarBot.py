@@ -104,13 +104,11 @@ def handle_message(event):
         x = requests.post(upload_url, data = data ,files=files, verify=False)
         result, upload = dbOperation.queryResult(event_id)
         msg = msgGenerator.imageEvent(upload, result)
-        intro = msgGenerator.textEvent(msg[10:], dialogs)
     except:
         msg = "伺服器維修中,暫無回應"
     line_bot_api.reply_message(
          event.reply_token,
-         (TextSendMessage(text=msg),
-          intro)
+         msg
           )
     
 
