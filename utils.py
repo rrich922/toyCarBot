@@ -77,7 +77,7 @@ class MsgGenerator():
         self.dialogs = dialogs
 
 
-    def templateGenerator(self,material,text='請選擇材料'):
+    def templateGenerator(self,material,text='請點選材料查看更多'):
         actions = []
         for m in material:
             action = MessageTemplateAction(
@@ -89,7 +89,7 @@ class MsgGenerator():
         template = TemplateSendMessage(
                             alt_text='Buttons template',
                             template=ButtonsTemplate(
-                                title='Menu',
+                                title='常用的循環材料如下',
                                 text=text,
                                 actions=actions
                             )
